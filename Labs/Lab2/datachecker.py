@@ -7,9 +7,7 @@ class DataChecker:
         self.cursor = self.conn.cursor()
 
     def check_valid_age(self, age):
-        try:
-            int(age)
-        except ValueError:
+        if not isinstance(age, int):
             print('Non-valid integer input')
             return False
 
