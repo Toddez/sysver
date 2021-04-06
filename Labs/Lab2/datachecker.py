@@ -4,7 +4,7 @@ from customer import Customer
 class DataChecker:
     def __init__(self):
         self.conn = sqlite3.connect('pos.db')
-        self.cursor = conn.cursor()
+        self.cursor = self.conn.cursor()
 
     def check_valid_age(self, age):
         try:
