@@ -27,10 +27,18 @@ class DataChecker:
         else:
             return True
 
+    def get_customer(self, customerID):
+        self.cursor.execute("""SELECT * FROM Customers WHERE ID == ?;""", (customerID,))
+        self.conn.commit()
+        return self.cursor.fetchall()
+
+    def get_equipment(self, IMEIPtr):
+        self.cursor.execute("""SELECT * FROM Equipment WHERE ID = ?;""", (IMEIPtr,))
+        self.conn.commit()
+        return self.cursor.fetchall()
+
     def customer_has_equipment_attached(self, customerID):
-        cursor.execute("""SELECT * FROM Customers WHERE ID == ?;""", (customerID,))
-        conn.commit()
-        customers = cursor.fetchall()
+        customers = self.get_customer(customerID)
 
         if len(customers) == 0:
             print("Customer ID not found in DB")
@@ -41,9 +49,7 @@ class DataChecker:
 
         # Fetch equipment
         if tmp_customer.IMEIPtr != None:
-            cursor.execute("""SELECT * FROM Equipment WHERE ID = ?;""", (tmp_customer.IMEIPtr,))
-            conn.commit()
-            equipment = cursor.fetchone()
+            equipment = self.get_equipment(tmp_customer.IMEIPtr)
 
             if len(equipment) == 0:
                 print('Customer has equipment ID but ID cant be found in DB.')
