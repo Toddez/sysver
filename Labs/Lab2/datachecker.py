@@ -3,6 +3,9 @@ from customer import Customer
 
 class DataChecker:
     def __init__(self):
+        self.connect_to_database()
+
+    def connect_to_database(self):
         self.conn = sqlite3.connect('pos.db')
         self.cursor = self.conn.cursor()
 
