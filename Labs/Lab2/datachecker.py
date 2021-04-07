@@ -48,6 +48,7 @@ class DataChecker:
             if len(equipment) == 0:
                 print('Customer has equipment ID but ID cant be found in DB.')
                 return False
+            return True
 
         else:
             print('Customer has no equipment attached to profile.')
