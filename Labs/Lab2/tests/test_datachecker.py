@@ -13,7 +13,7 @@ class TestDataChecker:
         assert dc.check_valid_age(1) == True
         assert dc.check_valid_age(-1) == False
         assert dc.check_valid_age(1.5) == False
-        assert dc.check_valid_age("one") == False
+        assert dc.check_valid_age("1") == False
 
     def test_check_valid_text_field(self):
         dc = self.dc
@@ -44,14 +44,13 @@ class TestDataChecker:
         assert dc.customer_has_equipment_attached(0) == False
 
         # valid customer - valid equipment pointer - invalid equipment
-        dc.get_customer.return_value[0][9] = 0 # Set valid equipment pointer
+        dc.get_customer.return_value[0][10] = 0 # set valid equipment pointer
         dc.get_equipment.return_value = [] # no equipment
         assert dc.customer_has_equipment_attached(0) == False
 
         # valid customer - valid equipment pointer - valid equipment
-        dc.get_customer.return_value[0][9] = 0 # Set valid equipment pointer
         dc.get_equipment.return_value = [
-            # some equipment
+            # set some valid equipment
             []
         ]
         assert dc.customer_has_equipment_attached(0) == True
