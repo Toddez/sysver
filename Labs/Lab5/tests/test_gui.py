@@ -168,6 +168,3 @@ class TestGUI:
         assert len(customer_elements) < customer_count
 
         driver.close()
-
-# TODO: More test cases that cover the critical paths in the system
-# TODO: Removing customer.
