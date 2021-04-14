@@ -92,6 +92,7 @@ const vm = new Vue({
 					Street: this.street,
 					Zip: this.zip,
 					City: this.city,
+					Email: this.email,
 					IMSIPtr: this.IMSIPtr,
 					IMEIPtr: this.IMEIPtr,
 					Nationality: this.nationality
@@ -109,6 +110,7 @@ const vm = new Vue({
 					Street: this.street,
 					Zip: this.zip,
 					City: this.city,
+					Email: this.email,
 					IMSIPtr: this.IMSIPtr,
 					IMEIPtr: this.IMEIPtr,
 				}).then(response => {
