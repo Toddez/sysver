@@ -37,26 +37,19 @@ class TestDataChecker:
             # customer
             [
                 0, "", "", 0, "", "", "", "", "", None,
-                None, # equipment pointer
+                None, # invalid equipment pointer
                 None, "", ""
             ]
         ]
         assert dc.customer_has_equipment_attached(0) == False
 
         # valid customer - valid equipment pointer - invalid equipment
-        dc.get_customer.return_value = [
-            # customer
-            [
-                0, "", "", 0, "", "", "", "", "", None,
-                0, # equipment pointer
-                None, "", ""
-            ]
-        ]
-        dc.get_equipment.return_value = []
+        dc.get_customer.return_value[0][9] = 0 # Set valid equipment pointer
+        dc.get_equipment.return_value = [] # no equipment
         assert dc.customer_has_equipment_attached(0) == False
 
         # valid customer - valid equipment pointer - valid equipment
-        dc.get_customer.return_value[0][9] = 0 # Set equipment pointer
+        dc.get_customer.return_value[0][9] = 0 # Set valid equipment pointer
         dc.get_equipment.return_value = [
             # some equipment
             []
