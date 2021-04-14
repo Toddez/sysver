@@ -12,6 +12,54 @@ from selenium.common.exceptions import TimeoutException
 def db_setup():
     shutil.copy("/home/pft/restapi/point-of-sale/pos_bak.db", "/home/pft/restapi/point-of-sale/pos.db")
 
+def assert_input(driver, data):
+    # assert data
+    for id, value in data.items():
+        input_element = driver.find_element_by_id(id)
+        assert input_element.is_enabled() == False
+        assert input_element.get_attribute("value") == str(value)
+
+def fill_out_customer_form(driver):
+    data = {
+        "firstname": "John",
+        "lastname": "Doe",
+        "age": "42",
+        "gender": "Male",
+        "nationality": "Swedish",
+        "street": "Granvägen",
+        "zipcode": "12345",
+        "city": "Doetorp",
+        "email": "john@doe.com"
+    }
+
+    # fill in data
+    for id, value in data.items():
+        # find element by id
+        input_element = driver.find_element_by_id(id)
+        assert input_element.is_enabled() == True
+
+        # fill in data
+        input_element.clear()
+        input_element.send_keys(value)
+
+    # click save
+    save_element = driver.find_element_by_id("save_customer_btn")
+    save_element.click()
+
+    # wait for page reload and get customer list
+    seconds_to_wait = 4
+    try:
+        customer_list_element = WebDriverWait(driver, seconds_to_wait).until(EC.presence_of_element_located((By.XPATH, "/html/body/div/div/div[1]")))
+    except TimeoutException:
+        print("Loading took too much time!")
+
+    # select the customer
+    customer_buttons = customer_list_element.find_elements_by_tag_name("p")
+    edited_customer_button = customer_buttons[-1]
+    edited_customer_button.click()
+
+    assert_input(driver, data)
+
 class TestGUI:
     def setup_method(self):
         options = Options()
@@ -33,83 +81,37 @@ class TestGUI:
         assert len(customers) > 0
 
         customer = customers[0]
-        assert customer["ID"] is not None
-        assert customer["Firstname"] is not None
+        assert customer is not None
 
         # select customer
         customer_element = self.driver.find_element_by_id(customer["ID"])
         customer_element.click()
 
-        # check that correct customer is selected
-        firstname_element = self.driver.find_element_by_id("firstname")
-        assert firstname_element.get_attribute("value") == customer["Firstname"]
-        assert firstname_element.is_enabled() == False
+        data = {
+            "firstname": customer["Firstname"],
+            "lastname": customer["Lastname"],
+            "age": customer["Age"],
+            "gender": customer["Sex"],
+            "nationality": customer["Nationality"],
+            "street": customer["Street"],
+            "zipcode": customer["Zip"],
+            "city": customer["City"],
+            "email": customer["Email"],
+        }
+        assert_input(self.driver, data)
 
         # click edit
         edit_element = self.driver.find_element_by_id("edit_customer_btn")
         edit_element.click()
 
-        # check that input is editable
-        assert firstname_element.is_enabled() == True
-
-        # TODO: assert equipment?
+        fill_out_customer_form(self.driver)
 
     def test_create_customer(self, db_setup):
-        # get equipment
-
         # click create new customer button
         create_element = self.driver.find_element_by_xpath("/html/body/div/div/div[1]/button")
         create_element.click()
 
-        # customer data
-        data = {
-            "firstname": "John",
-            "lastname": "Doe",
-            "age": "42",
-            "gender": "Male",
-            "nationality": "Swedish",
-            "street": "Granvägen",
-            "zipcode": "12345",
-            "city": "Doetorp",
-            "email": "john@doe.com"
-        }
+        fill_out_customer_form(self.driver)
 
-        # fill in data
-        for id, value in data.items():
-            # find element by id
-            input_element = self.driver.find_element_by_id(id)
-            assert input_element.is_enabled() == True
-            assert input_element.get_attribute("value") == ""
-
-            # fill in data
-            input_element.send_keys(value)
-
-        # click save
-        save_element = self.driver.find_element_by_id("save_customer_btn")
-        save_element.click()
-
-        # wait for page reload and get customer list
-        seconds_to_wait = 4
-        try:
-            customer_list_element = WebDriverWait(self.driver, seconds_to_wait).until(EC.presence_of_element_located((By.XPATH, "/html/body/div/div/div[1]")))
-        except TimeoutException:
-            print("Loading took too much time!")
-
-        # select the new customer
-        customer_buttons = customer_list_element.find_elements_by_tag_name("p")
-        new_customer_button = customer_buttons[-1]
-        new_customer_button.click()
-
-        # assert data
-        for id, value in data.items():
-            input_element = self.driver.find_element_by_id(id)
-            assert input_element.is_enabled() == False
-            assert input_element.get_attribute("value") == value
-
-        # click edit equipment
-        # fill in data
-        # click save
-
-
-
-    # More test cases that cover the critical paths in the system
+# TODO: More test cases that cover the critical paths in the system
+# TODO: Removing customer.
