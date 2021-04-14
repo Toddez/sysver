@@ -120,7 +120,7 @@ const vm = new Vue({
 			location.reload();											
 		},
 		DeleteCustomer: function() {
-			var r = confirm("Are you sure you eant to delete this customer?")
+			var r = confirm("Are you sure you want to delete this customer?")
 			if (r == true) {
 				axios.delete(individual_customer_url + this.ID).then(response => {
 					location.reload();											
