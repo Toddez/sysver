@@ -11,6 +11,45 @@ def assert_input(driver, data):
         assert input_element.is_enabled() == False
         assert input_element.get_attribute("value") == str(value)
 
+def open_customer(driver, customer):
+    # find customer and click
+    customer_element = driver.find_element_by_id(customer["ID"])
+    customer_element.click()
+
+    # make sure the non-input fiels have the correct values
+    image_element = driver.find_element_by_xpath("/html/body/div/div/div[4]/table/tbody/tr[1]/td[3]/img")
+    assert customer["equipment"]["product"]["ImageURL"] in image_element.get_attribute("src")
+
+    device_element = driver.find_element_by_xpath("/html/body/div/div/div[4]/table/tbody/tr[3]/td[2]")
+    assert device_element.get_attribute("innerHTML") == customer["equipment"]["product"]["Model"]
+
+    device_type_element = driver.find_element_by_xpath("/html/body/div/div/div[4]/table/tbody/tr[4]/td[2]")
+    assert device_type_element.get_attribute("innerHTML") == customer["equipment"]["product"]["Type"]
+
+    device_imei_element = driver.find_element_by_xpath("/html/body/div/div/div[4]/table/tbody/tr[5]/td[2]")
+    assert device_imei_element.get_attribute("innerHTML") == customer["equipment"]["IMEI"]
+
+    # input field values
+    data = {
+        #customer
+        "firstname": customer["Firstname"],
+        "lastname": customer["Lastname"],
+        "age": customer["Age"],
+        "gender": customer["Sex"],
+        "nationality": customer["Nationality"],
+        "street": customer["Street"],
+        "zipcode": customer["Zip"],
+        "city": customer["City"],
+        "email": customer["Email"],
+
+        # equipment
+        "phone": customer["sim"]["MSISDN"],
+        "imsi": customer["sim"]["IMSI"]
+    }
+
+    # make sure the input fields have the correct data
+    assert_input(driver, data)
+
 def fill_out_customer_form(driver):
     data = {
         "firstname": "John",
