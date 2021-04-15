@@ -1,54 +1,22 @@
 import pytest
-import requests
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
-from fixtures import db_setup, driver_setup
-from helpers import assert_input, fill_out_customer_form
+from fixtures import db_setup, driver_setup, get_customer
+from helpers import assert_input, fill_out_customer_form, open_customer
 
 seconds_to_wait = 4
 
 class TestGUI:
-    def test_open_exisiting_user(self, db_setup, driver_setup):
+    def test_open_exisiting_user(self, db_setup, driver_setup, get_customer):
         driver = driver_setup
 
-        # get a customer to open/edit
-        result = requests.get("http://localhost:6399/customers")
-        assert result.ok
-        assert result.status_code == 200
+        # get a customer to open
+        customer = get_customer
 
-        customers = result.json()
-        assert len(customers) > 0
-
-        customer = customers[0]
-        assert customer is not None
-
-        # edit customer
-        customer_element = driver.find_element_by_id(customer["ID"])
-        customer_element.click()
-
-        data = {
-            "firstname": customer["Firstname"],
-            "lastname": customer["Lastname"],
-            "age": customer["Age"],
-            "gender": customer["Sex"],
-            "nationality": customer["Nationality"],
-            "street": customer["Street"],
-            "zipcode": customer["Zip"],
-            "city": customer["City"],
-            "email": customer["Email"],
-        }
-
-        # make sure the input fields have the correct data
-        assert_input(driver, data)
-
-        # click edit
-        edit_element = driver.find_element_by_id("edit_customer_btn")
-        edit_element.click()
-
-        # fill out customer form and save
-        fill_out_customer_form(driver)
+        # open customer
+        open_customer(driver, customer)
 
         driver.close()
 
@@ -58,6 +26,24 @@ class TestGUI:
         # click create new customer button
         create_element = driver.find_element_by_xpath("/html/body/div/div/div[1]/button")
         create_element.click()
+
+        # fill out customer form and save
+        fill_out_customer_form(driver)
+
+        driver.close()
+
+    def test_edit_user(self, db_setup, driver_setup, get_customer):
+        driver = driver_setup
+
+        # get a customer to edit
+        customer = get_customer
+
+        # open customer
+        open_customer(driver, customer)
+
+        # click edit
+        edit_element = driver.find_element_by_id("edit_customer_btn")
+        edit_element.click()
 
         # fill out customer form and save
         fill_out_customer_form(driver)
