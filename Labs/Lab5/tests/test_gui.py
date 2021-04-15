@@ -100,9 +100,9 @@ class TestGUI:
             print("Took too long to find customer_list_element")
 
         # confirm the user was deleted
-        assert customer_list_is_empty == True
         customer_elements = driver.find_element_by_xpath("/html/body/div/div/div[1]").find_elements_by_tag_name("p")
         assert len(customer_elements) < customer_count
         assert len(driver.find_elements_by_id(customer_id)) == 0
+        assert customer_list_is_empty == True
 
         driver.close()
