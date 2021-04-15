@@ -38,6 +38,12 @@ def fill_out_customer_form(driver):
     save_element = driver.find_element_by_id("save_customer_btn")
     save_element.click()
 
+    # wait for save request to finish and trigger reload
+    try:
+        WebDriverWait(driver, seconds_to_wait).until(EC.staleness_of(driver.find_element_by_xpath("/html/body/div/div/div[1]")))
+    except TimeoutException:
+        print("Took too long to wait for refresh")
+
     # wait for page reload and get customer list
     try:
         customer_list_element = WebDriverWait(driver, seconds_to_wait).until(EC.presence_of_element_located((By.XPATH, "/html/body/div/div/div[1]")))
