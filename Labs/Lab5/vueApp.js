@@ -98,6 +98,7 @@ const vm = new Vue({
 					Nationality: this.nationality
 				}).then(response => {
 					this.editmode = 0
+					location.reload();
 				})
 			}
 			else {
@@ -115,9 +116,9 @@ const vm = new Vue({
 					IMEIPtr: this.IMEIPtr,
 				}).then(response => {
 					this.editmode = 0
+					location.reload();
 				})
 			}
-			location.reload();											
 		},
 		DeleteCustomer: function() {
 			var r = confirm("Are you sure you want to delete this customer?")
