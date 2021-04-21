@@ -35,9 +35,11 @@ def get_customer():
     and then another to get the full information about the first one
     """
 
+    # get all customers and pick first one
     customers_result = requests.get("http://localhost:6399/customers")
     customer_id = customers_result.json()[0]["ID"]
 
+    # get full info about customer
     result = requests.get("http://localhost:6399/full_customer/" + str(customer_id))
 
     return result.json()
