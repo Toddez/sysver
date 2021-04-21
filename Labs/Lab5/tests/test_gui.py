@@ -153,7 +153,7 @@ class TestGUI:
     def test_delete_customer(self, db_setup, driver_setup, get_customer):
         driver = driver_setup
 
-        # get a customer to open
+        # get a customer to delete
         customer = get_customer
 
         # find customer and click
