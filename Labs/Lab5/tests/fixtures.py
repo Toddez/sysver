@@ -14,16 +14,11 @@ def driver_setup():
     options.headless = True
     driver = webdriver.Firefox(options=options)
     driver.get("http://localhost")
-    assert driver.title == "Customer Care"
+
     return driver
 
 @pytest.fixture()
 def get_customer():
     result = requests.get("http://localhost:6399/full_customer/513")
-    assert result.ok
-    assert result.status_code == 200
 
-    customer = result.json()
-    assert customer is not None
-
-    return customer
+    return result.json()
