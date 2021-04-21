@@ -15,7 +15,7 @@ class TestGUI:
         # get a customer to open
         customer = get_customer
 
-        # open customer
+        # open customer and assert input
         open_customer(driver, customer)
 
         driver.close()
@@ -27,7 +27,7 @@ class TestGUI:
         create_element = driver.find_element_by_xpath("/html/body/div/div/div[1]/button")
         create_element.click()
 
-        # fill out customer form and save
+        # fill out customer form, save and assert input
         fill_out_customer_form(driver)
 
         driver.close()
@@ -38,14 +38,14 @@ class TestGUI:
         # get a customer to edit
         customer = get_customer
 
-        # open customer
+        # open customer and assert input
         open_customer(driver, customer)
 
         # click edit
         edit_element = driver.find_element_by_id("edit_customer_btn")
         edit_element.click()
 
-        # fill out customer form and save
+        # fill out customer form, save and assert input
         fill_out_customer_form(driver)
 
         driver.close()
