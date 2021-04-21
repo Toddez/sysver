@@ -32,6 +32,9 @@ def get_customer():
     Since we know the state of the database, we can use a hard-coded customer.
     """
 
-    result = requests.get("http://localhost:6399/full_customer/513")
+    customers_result = requests.get("http://localhost:6399/customers")
+    customer_id = customers_result.json()[0]["ID"]
+
+    result = requests.get("http://localhost:6399/full_customer/" + str(customer_id))
 
     return result.json()
