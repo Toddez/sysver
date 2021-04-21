@@ -19,17 +19,6 @@ def driver_setup():
 
 @pytest.fixture()
 def get_customer():
-    # get all customers
-    # result = requests.get("http://localhost:6399/customers")
-    # assert result.ok
-    # assert result.status_code == 200
-
-    # customers = result.json()
-    # assert len(customers) > 0
-
-    # customer = customers[0]
-    # assert customer is not None
-
     result = requests.get("http://localhost:6399/full_customer/513")
     assert result.ok
     assert result.status_code == 200
