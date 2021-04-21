@@ -8,13 +8,26 @@ from fixtures import db_setup, driver_setup, get_customer
 seconds_to_wait = 4
 
 def assert_input(driver, data):
-    # assert data
+    """
+    Loops over the data and asserts that each corresponding input field has matching values
+    """
+
     for id, value in data.items():
         input_element = driver.find_element_by_id(id)
         assert input_element.get_attribute("value") == str(value)
 
 def assert_equipment(driver, customer):
-    # make sure the non-input fiels have the correct values
+    """
+    Goes through all relevant equipment data of the customer
+    and asserts that the corresponding elements have matching values
+    """
+
+    phone_element = driver.find_element_by_id("phone")
+    assert phone_element.get_attribute("value") == customer["sim"]["MSISDN"]
+
+    imsi_element = driver.find_element_by_id("imsi")
+    assert imsi_element.get_attribute("value") == customer["sim"]["IMSI"]
+
     image_element = driver.find_element_by_xpath("/html/body/div/div/div[4]/table/tbody/tr[1]/td[3]/img")
     assert customer["equipment"]["product"]["ImageURL"] in image_element.get_attribute("src")
 
@@ -28,6 +41,10 @@ def assert_equipment(driver, customer):
     assert device_imei_element.get_attribute("innerHTML") == customer["equipment"]["IMEI"]
 
 def fill_out_customer_form(driver, data):
+    """
+    Goes through data and inputs the values into their corresponding input field. It also saves and re-selects the customer
+    """
+
     for id, value in data.items():
         input_element = driver.find_element_by_id(id)
         assert input_element.is_enabled() == True
@@ -60,6 +77,10 @@ def fill_out_customer_form(driver, data):
 
 class TestGUI:
     def test_open_exisiting_customer(self, db_setup, driver_setup, get_customer):
+        """
+        Open existing customer, assert that the correct data is shown
+        """
+
         driver = driver_setup
 
         # get a customer to open
@@ -81,10 +102,6 @@ class TestGUI:
             "zipcode": customer["Zip"],
             "city": customer["City"],
             "email": customer["Email"],
-
-            # equipment input
-            "phone": customer["sim"]["MSISDN"],
-            "imsi": customer["sim"]["IMSI"]
         }
 
         # assert customer info
@@ -94,6 +111,10 @@ class TestGUI:
         driver.close()
 
     def test_create_customer(self, db_setup, driver_setup):
+        """
+        Create a new customer, assert that the new customer is shown with the given data
+        """
+
         driver = driver_setup
 
         # click create new customer button
@@ -119,6 +140,10 @@ class TestGUI:
         driver.close()
 
     def test_edit_customer(self, db_setup, driver_setup, get_customer):
+        """
+        Edit an existing customer, assert that the edited customer is shown with the new data
+        """
+
         driver = driver_setup
 
         # get a customer to edit
@@ -151,6 +176,10 @@ class TestGUI:
         driver.close()
 
     def test_delete_customer(self, db_setup, driver_setup, get_customer):
+        """
+        Delete an existing customer, assert that the customer is no longer shown in the list
+        """
+
         driver = driver_setup
 
         # get a customer to delete
