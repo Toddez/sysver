@@ -9,7 +9,7 @@ from helpers import assert_input, fill_out_customer_form, open_customer
 seconds_to_wait = 4
 
 class TestGUI:
-    def test_open_exisiting_user(self, db_setup, driver_setup, get_customer):
+    def test_open_exisiting_customer(self, db_setup, driver_setup, get_customer):
         driver = driver_setup
 
         # get a customer to open
@@ -32,7 +32,7 @@ class TestGUI:
 
         driver.close()
 
-    def test_edit_user(self, db_setup, driver_setup, get_customer):
+    def test_edit_customer(self, db_setup, driver_setup, get_customer):
         driver = driver_setup
 
         # get a customer to edit
