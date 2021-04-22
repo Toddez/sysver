@@ -23,7 +23,9 @@ def driver_setup():
     driver = webdriver.Firefox(options=options)
     driver.get("http://localhost")
 
-    return driver
+    yield driver
+
+    driver.close()
 
 @pytest.fixture()
 def get_customer():

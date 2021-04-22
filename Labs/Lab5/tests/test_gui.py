@@ -108,8 +108,6 @@ class TestGUI:
         assert_input(driver, input_data)
         assert_equipment(driver, customer)
 
-        driver.close()
-
     def test_create_customer(self, db_setup, driver_setup):
         """
         Create a new customer, assert that the new customer is shown with the given data
@@ -136,8 +134,6 @@ class TestGUI:
         # fill out customer form, save and assert input
         fill_out_customer_form(driver, data)
         assert_input(driver, data)
-
-        driver.close()
 
     def test_edit_customer(self, db_setup, driver_setup, get_customer):
         """
@@ -172,8 +168,6 @@ class TestGUI:
         # fill out customer form, save and assert input
         fill_out_customer_form(driver, data)
         assert_input(driver, data)
-
-        driver.close()
 
     def test_delete_customer(self, db_setup, driver_setup, get_customer):
         """
@@ -212,5 +206,3 @@ class TestGUI:
 
         # confirm the user was deleted
         assert len(driver.find_elements_by_id(customer["ID"])) == 0
-
-        driver.close()
