@@ -4,13 +4,16 @@ import requests
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
+# should probably be environment variables
+api_url = "http://localhost:6399/"
+db_path = "/home/pft/restapi/point-of-sale/"
+
 @pytest.fixture()
 def db_setup():
     """
     Restores the database from a backup
     """
-
-    shutil.copy("/home/pft/restapi/point-of-sale/pos_bak.db", "/home/pft/restapi/point-of-sale/pos.db")
+    shutil.copy(db_path + "pos_bak.db", db_path + "pos.db")
 
 @pytest.fixture()
 def driver_setup():
@@ -38,10 +41,10 @@ def get_customer():
     """
 
     # get all customers and pick first one
-    customers_result = requests.get("http://localhost:6399/customers")
+    customers_result = requests.get(api_url + "customers")
     customer_id = customers_result.json()[0]["ID"]
 
     # get full info about customer
-    result = requests.get("http://localhost:6399/full_customer/" + str(customer_id))
+    result = requests.get(api_url + "full_customer/" + str(customer_id))
 
     return result.json()
