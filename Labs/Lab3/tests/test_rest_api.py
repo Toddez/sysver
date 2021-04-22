@@ -1,6 +1,9 @@
 import requests
 import shutil
 import pytest
+
+# should probably be an environment variable
+api_url = "http://localhost:6399/"
 from fixtures import db_setup, create_customer, create_sim, create_equipment
 
 def assert_response_payload(response_data, payload):
@@ -45,7 +48,7 @@ class TestRestAPI:
 
         customer_payload["IMSIPtr"] = str(sim_id)
 
-        response = requests.put("http://localhost:6399/customers/" + str(customer_id), json=customer_payload)
+        response = requests.put(api_url + "customers/" + str(customer_id), json=customer_payload)
 
         assert response.ok
         assert response.status_code == 200
@@ -72,7 +75,7 @@ class TestRestAPI:
 
         customer_payload["IMEIPtr"] = str(equipment_id)
 
-        response = requests.put("http://localhost:6399/customers/" + str(customer_id), json=customer_payload)
+        response = requests.put(api_url + "customers/" + str(customer_id), json=customer_payload)
 
         assert response.ok
         assert response.status_code == 200
