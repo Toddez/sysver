@@ -5,6 +5,16 @@ import pytest
 from test_customer import api_url
 from fixtures import db_setup
 
+def get_equipment(
+    id = 380
+):
+    return requests.get(api_url + "equipments/" + str(id))
+
+def delete_equipment(
+    id = 380
+):
+    return requests.delete(api_url + "equipments/" + str(id))
+
 def create_equipment(
     imei = "IMEI_0123456789",
     product_ptr = "1010"
@@ -25,6 +35,56 @@ def update_equipment(
     }
     equipment_id = create_equipment().json()["ID"]
     return requests.put(api_url + "equipments/" + str(equipment_id), json=payload)
+
+class TestGetEquipment:
+    def test_get_equipment_default(self, db_setup):
+        res = get_equipment()
+        assert res.status_code != 500
+
+    def test_get_equipment_none_id(self, db_setup):
+        res = get_equipment(id=None)
+        assert res.status_code != 500
+
+    def test_get_equipment_negative_id(self, db_setup):
+        res = get_equipment(id=-1)
+        assert res.status_code != 500
+
+    def test_get_equipment_zero_id(self, db_setup):
+        res = get_equipment(id=0)
+        assert res.status_code != 500
+
+    def test_get_equipment_above_max_id(self, db_setup):
+        res = get_equipment(id=pow(2, 63))
+        assert res.status_code != 500
+
+    def test_get_equipment_below_min_id(self, db_setup):
+        res = get_equipment(id=-pow(2, 63) - 1)
+        assert res.status_code != 500
+
+class TestDeleteEquipment:
+    def test_delete_equipment_default(self, db_setup):
+        res = delete_equipment()
+        assert res.status_code != 500
+
+    def test_delete_equipment_none_id(self, db_setup):
+        res = delete_equipment(id=None)
+        assert res.status_code != 500
+
+    def test_delete_equipment_negative_id(self, db_setup):
+        res = delete_equipment(id=-1)
+        assert res.status_code != 500
+
+    def test_delete_equipment_zero_id(self, db_setup):
+        res = delete_equipment(id=0)
+        assert res.status_code != 500
+
+    def test_delete_equipment_above_max_id(self, db_setup):
+        res = delete_equipment(id=pow(2, 63))
+        assert res.status_code != 500
+
+    def test_delete_equipment_below_min_id(self, db_setup):
+        res = delete_equipment(id=-pow(2, 63) - 1)
+        assert res.status_code != 500
 
 class TestCreateEquipment:
     def test_create_equipment_default(self, db_setup):

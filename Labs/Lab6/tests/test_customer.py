@@ -6,18 +6,20 @@ from fixtures import db_setup
 
 api_url = "http://localhost:6399/"
 
-# sim
-#msisdn - 50
-#imsi - 50
+def get_customer(
+    id = 513
+):
+    return requests.get(api_url + "customers/" + str(id))
 
-# product
-#type - 50
-#model - 50
-#image - blob
+def get_full_customer(
+    id = 513
+):
+    return requests.get(api_url + "full_customer/" + str(id))
 
-#equipment
-#imei - 50
-#productPtr - int
+def delete_customer(
+    id = 513
+):
+    return requests.delete(api_url + "customers/" + str(id))
 
 def create_customer(
     first_name = "John",
@@ -80,6 +82,81 @@ def update_customer(
     customer_id = create_customer().json()["ID"]
     return requests.put(api_url + "customers/" + str(customer_id), json=payload)
 
+class TestGetCustomer:
+    def test_get_customer_default(self, db_setup):
+        res = get_customer()
+        assert res.status_code != 500
+
+    def test_get_customer_none_id(self, db_setup):
+        res = get_customer(id=None)
+        assert res.status_code != 500
+
+    def test_get_customer_negative_id(self, db_setup):
+        res = get_customer(id=-1)
+        assert res.status_code != 500
+
+    def test_get_customer_zero_id(self, db_setup):
+        res = get_customer(id=0)
+        assert res.status_code != 500
+
+    def test_get_customer_above_max_id(self, db_setup):
+        res = get_customer(id=pow(2, 63))
+        assert res.status_code != 500
+
+    def test_get_customer_below_min_id(self, db_setup):
+        res = get_customer(id=-pow(2, 63) - 1)
+        assert res.status_code != 500
+
+class TestGetFullCustomer:
+    def test_get_full_customer_default(self, db_setup):
+        res = get_full_customer()
+        assert res.status_code != 500
+
+    def test_get_full_customer_none_id(self, db_setup):
+        res = get_full_customer(id=None)
+        assert res.status_code != 500
+
+    def test_get_full_customer_negative_id(self, db_setup):
+        res = get_full_customer(id=-1)
+        assert res.status_code != 500
+
+    def test_get_full_customer_zero_id(self, db_setup):
+        res = get_full_customer(id=0)
+        assert res.status_code != 500
+
+    def test_get_full_customer_above_max_id(self, db_setup):
+        res = get_full_customer(id=pow(2, 63))
+        assert res.status_code != 500
+
+    def test_get_full_customer_below_min_id(self, db_setup):
+        res = get_full_customer(id=-pow(2, 63) - 1)
+        assert res.status_code != 500
+
+class TestDeleteCustomer:
+    def test_delete_customer_default(self, db_setup):
+        res = delete_customer()
+        assert res.status_code != 500
+
+    def test_delete_customer_none_id(self, db_setup):
+        res = delete_customer(id=None)
+        assert res.status_code != 500
+
+    def test_delete_customer_negative_id(self, db_setup):
+        res = delete_customer(id=-1)
+        assert res.status_code != 500
+
+    def test_delete_customer_zero_id(self, db_setup):
+        res = delete_customer(id=0)
+        assert res.status_code != 500
+
+    def test_delete_customer_above_max_id(self, db_setup):
+        res = delete_customer(id=pow(2, 63))
+        assert res.status_code != 500
+
+    def test_delete_customer_below_min_id(self, db_setup):
+        res = delete_customer(id=-pow(2, 63) - 1)
+        assert res.status_code != 500
+
 class TestCreateCustomer:
     def test_create_customer_default(self, db_setup):
         res = create_customer()
@@ -106,7 +183,7 @@ class TestCreateCustomer:
         assert res.status_code != 500
 
     def test_create_customer_non_ascii_lastname(self, db_setup):
-        res = create_customer(last_name=="åäö😀")
+        res = create_customer(last_name="åäö😀")
         assert res.status_code != 500
 
     def test_create_customer_none_age(self, db_setup):
@@ -170,7 +247,7 @@ class TestCreateCustomer:
         assert res.status_code != 500
 
     def test_create_customer_non_ascii_zip(self, db_setup):
-        res = create_customer(zip="åäö😀")
+        res = create_customer(zip_code="åäö😀")
         assert res.status_code != 500
 
     def test_create_customer_none_city(self, db_setup):
@@ -409,15 +486,3 @@ class TestUpdateCustomer:
     def test_update_customer_below_min_imsi(self, db_setup):
         res = update_customer(imsi=-pow(2, 63) - 1)
         assert res.status_code != 500
-
-class TestCreateProduct:
-    pass
-
-class TestUpdateProduct:
-    pass
-
-class TestCreateEquipment:
-    pass
-
-class TestUpdateEquipment:
-    pass

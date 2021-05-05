@@ -5,6 +5,16 @@ import pytest
 from test_customer import api_url
 from fixtures import db_setup
 
+def get_sim(
+    id = 635
+):
+    return requests.get(api_url + "sims/" + str(id))
+
+def delete_sim(
+    id = 635
+):
+    return requests.delete(api_url + "sims/" + str(id))
+
 def create_sim(
     imsi = "IMSI_0123456789",
     msisdn = "+46723580953"
@@ -25,6 +35,56 @@ def update_sim(
     }
     sim_id = create_sim().json()["ID"]
     return requests.put(api_url + "sims/" + str(sim_id), json=payload)
+
+class TestGetSim:
+    def test_get_sim_default(self, db_setup):
+        res = get_sim()
+        assert res.status_code != 500
+
+    def test_get_sim_none_id(self, db_setup):
+        res = get_sim(id=None)
+        assert res.status_code != 500
+
+    def test_get_sim_negative_id(self, db_setup):
+        res = get_sim(id=-1)
+        assert res.status_code != 500
+
+    def test_get_sim_zero_id(self, db_setup):
+        res = get_sim(id=0)
+        assert res.status_code != 500
+
+    def test_get_sim_above_max_id(self, db_setup):
+        res = get_sim(id=pow(2, 63))
+        assert res.status_code != 500
+
+    def test_get_sim_below_min_id(self, db_setup):
+        res = get_sim(id=-pow(2, 63) - 1)
+        assert res.status_code != 500
+
+class TestDeleteSim:
+    def test_delete_sim_default(self, db_setup):
+        res = delete_sim()
+        assert res.status_code != 500
+
+    def test_delete_sim_none_id(self, db_setup):
+        res = delete_sim(id=None)
+        assert res.status_code != 500
+
+    def test_delete_sim_negative_id(self, db_setup):
+        res = delete_sim(id=-1)
+        assert res.status_code != 500
+
+    def test_delete_sim_zero_id(self, db_setup):
+        res = delete_sim(id=0)
+        assert res.status_code != 500
+
+    def test_delete_sim_above_max_id(self, db_setup):
+        res = delete_sim(id=pow(2, 63))
+        assert res.status_code != 500
+
+    def test_delete_sim_below_min_id(self, db_setup):
+        res = delete_sim(id=-pow(2, 63) - 1)
+        assert res.status_code != 500
 
 class TestCreateSim:
     def test_create_sim_default(self, db_setup):
