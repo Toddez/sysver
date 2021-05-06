@@ -5,14 +5,10 @@ import pytest
 from test_customer import api_url
 from fixtures import db_setup
 
-def get_equipment(
-    id = 380
-):
+def get_equipment(id = 380):
     return requests.get(api_url + "equipments/" + str(id))
 
-def delete_equipment(
-    id = 380
-):
+def delete_equipment(id = 380):
     return requests.delete(api_url + "equipments/" + str(id))
 
 def create_equipment(
@@ -37,6 +33,11 @@ def update_equipment(
     return requests.put(api_url + "equipments/" + str(equipment_id), json=payload)
 
 class TestGetEquipment:
+    """
+    GET: /equipments/<int:id>
+    Attempt to get equipment with different inputs and check if system crashes
+    """
+
     def test_get_equipment_default(self, db_setup):
         res = get_equipment()
         assert res.status_code != 500
@@ -62,6 +63,11 @@ class TestGetEquipment:
         assert res.status_code != 500
 
 class TestDeleteEquipment:
+    """
+    DELETE: /equipments/<int:id>
+    Attempt to delete equipment with different inputs and check if system crashes
+    """
+
     def test_delete_equipment_default(self, db_setup):
         res = delete_equipment()
         assert res.status_code != 500
@@ -87,6 +93,11 @@ class TestDeleteEquipment:
         assert res.status_code != 500
 
 class TestCreateEquipment:
+    """
+    POST: /equipments
+    Attempt to create equipment with different inputs and check if system crashes
+    """
+
     def test_create_equipment_default(self, db_setup):
         res = create_equipment()
         assert res.status_code != 500
@@ -116,6 +127,11 @@ class TestCreateEquipment:
         assert res.status_code != 500
 
 class TestUpdateEquipment:
+    """
+    PUT: /equipments/<int:id>
+    Attempt to update equipment with different inputs and check if system crashes
+    """
+
     def test_update_equipment_default(self, db_setup):
         res = update_equipment()
         assert res.status_code != 500

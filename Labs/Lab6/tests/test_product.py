@@ -5,14 +5,10 @@ import pytest
 from test_customer import api_url
 from fixtures import db_setup
 
-def get_product(
-    id = 1010
-):
+def get_product(id = 1010):
     return requests.get(api_url + "products/" + str(id))
 
-def delete_product(
-    id = 1010
-):
+def delete_product(id = 1010):
     return requests.delete(api_url + "products/" + str(id))
 
 def create_product(
@@ -36,9 +32,7 @@ def update_product(
     product_id = create_product().json()["ID"]
     return requests.put(api_url + "products/" + str(product_id), json=payload)
 
-def get_product_image(
-    id = 1010,
-):
+def get_product_image(id = 1010):
     return requests.get(api_url + "products/images" + str(id) + ".jpeg")
 
 def update_product_image(
@@ -48,6 +42,11 @@ def update_product_image(
     return requests.put(api_url + "products/" + str(id) + "/image", data=image)
 
 class TestGetProductImage:
+    """
+    GET: /products/images/<int:id>
+    Attempt to get product image with different inputs and check if system crashes
+    """
+
     def test_get_product_image_default(self, db_setup):
         res = get_product_image()
         assert res.status_code != 500
@@ -73,6 +72,11 @@ class TestGetProductImage:
         assert res.status_code != 500
 
 class TestUpdateProductImage:
+    """
+    PUT: /products/<int:id>/image
+    Attempt to update product image with different inputs and check if system crashes
+    """
+
     def test_update_product_image_default(self, db_setup):
         res = update_product_image()
         assert res.status_code != 500
@@ -102,6 +106,11 @@ class TestUpdateProductImage:
         assert res.status_code != 500
 
 class TestGetProduct:
+    """
+    GET: /products/<int:id>
+    Attempt to get product with different inputs and check if system crashes
+    """
+
     def test_get_product_default(self, db_setup):
         res = get_product()
         assert res.status_code != 500
@@ -127,6 +136,11 @@ class TestGetProduct:
         assert res.status_code != 500
 
 class TestDeleteProduct:
+    """
+    DELETE: /products/<int:id>
+    Attempt to delete product with different inputs and check if system crashes
+    """
+
     def test_delete_product_default(self, db_setup):
         res = delete_product()
         assert res.status_code != 500
@@ -152,6 +166,11 @@ class TestDeleteProduct:
         assert res.status_code != 500
 
 class TestCreateProduct:
+    """
+    POST: /products/<int:id>
+    Attempt to create product with different inputs and check if system crashes
+    """
+
     def test_create_product_default(self, db_setup):
         res = create_product()
         assert res.status_code != 500
@@ -181,6 +200,11 @@ class TestCreateProduct:
         assert res.status_code != 500
 
 class TestUpdateProduct:
+    """
+    PUT: /products/<int:id>
+    Attempt to update product with different inputs and check if system crashes
+    """
+
     def test_update_product_default(self, db_setup):
         res = update_product()
         assert res.status_code != 500

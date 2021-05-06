@@ -5,14 +5,10 @@ import pytest
 from test_customer import api_url
 from fixtures import db_setup
 
-def get_sim(
-    id = 635
-):
+def get_sim(id = 635):
     return requests.get(api_url + "sims/" + str(id))
 
-def delete_sim(
-    id = 635
-):
+def delete_sim(id = 635):
     return requests.delete(api_url + "sims/" + str(id))
 
 def create_sim(
@@ -37,6 +33,11 @@ def update_sim(
     return requests.put(api_url + "sims/" + str(sim_id), json=payload)
 
 class TestGetSim:
+    """
+    GET: /sims/<int:id>
+    Attempt to get sim with different inputs and check if system crashes
+    """
+
     def test_get_sim_default(self, db_setup):
         res = get_sim()
         assert res.status_code != 500
@@ -62,6 +63,11 @@ class TestGetSim:
         assert res.status_code != 500
 
 class TestDeleteSim:
+    """
+    DELETE: /sims/<int:id>
+    Attempt to delet sim with different inputs and check if system crashes
+    """
+
     def test_delete_sim_default(self, db_setup):
         res = delete_sim()
         assert res.status_code != 500
@@ -87,6 +93,11 @@ class TestDeleteSim:
         assert res.status_code != 500
 
 class TestCreateSim:
+    """
+    POST: /sims/<int:id>
+    Attempt to create sim with different inputs and check if system crashes
+    """
+
     def test_create_sim_default(self, db_setup):
         res = create_sim()
         assert res.status_code != 500
@@ -116,6 +127,11 @@ class TestCreateSim:
         assert res.status_code != 500
 
 class TestUpdateSim:
+    """
+    PUT: /sims/<int:id>
+    Attempt to update sim with different inputs and check if system crashes
+    """
+
     def test_update_sim_default(self, db_setup):
         res = update_sim()
         assert res.status_code != 500

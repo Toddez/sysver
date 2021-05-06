@@ -6,19 +6,13 @@ from fixtures import db_setup
 
 api_url = "http://localhost:6399/"
 
-def get_customer(
-    id = 513
-):
+def get_customer(id = 513):
     return requests.get(api_url + "customers/" + str(id))
 
-def get_full_customer(
-    id = 513
-):
+def get_full_customer(id = 513):
     return requests.get(api_url + "full_customer/" + str(id))
 
-def delete_customer(
-    id = 513
-):
+def delete_customer(id = 513):
     return requests.delete(api_url + "customers/" + str(id))
 
 def create_customer(
@@ -83,6 +77,11 @@ def update_customer(
     return requests.put(api_url + "customers/" + str(customer_id), json=payload)
 
 class TestGetCustomer:
+    """
+    GET: /customers/<int:id>
+    Attempt to get customer with different inputs and check if system crashes
+    """
+
     def test_get_customer_default(self, db_setup):
         res = get_customer()
         assert res.status_code != 500
@@ -108,6 +107,11 @@ class TestGetCustomer:
         assert res.status_code != 500
 
 class TestGetFullCustomer:
+    """
+    GET: /full_customer/<int:id>
+    Attempt to get full customer with different inputs and check if system crashes
+    """
+
     def test_get_full_customer_default(self, db_setup):
         res = get_full_customer()
         assert res.status_code != 500
@@ -133,6 +137,11 @@ class TestGetFullCustomer:
         assert res.status_code != 500
 
 class TestDeleteCustomer:
+    """
+    DELETE: /customers/<int:id>
+    Attempt to delete customer with different inputs and check if system crashes
+    """
+
     def test_delete_customer_default(self, db_setup):
         res = delete_customer()
         assert res.status_code != 500
@@ -158,6 +167,11 @@ class TestDeleteCustomer:
         assert res.status_code != 500
 
 class TestCreateCustomer:
+    """
+    POST: /customers
+    Attempt to create customer with different inputs and check if system crashes
+    """
+
     def test_create_customer_default(self, db_setup):
         res = create_customer()
         assert res.status_code != 500
@@ -339,6 +353,11 @@ class TestCreateCustomer:
         assert res.status_code != 500
 
 class TestUpdateCustomer:
+    """
+    PUT: /customers/<int:id>
+    Attempt to update customer with different inputs and check if system crashes
+    """
+
     def test_update_customer_default(self, db_setup):
         res = update_customer()
         assert res.status_code != 500
