@@ -40,27 +40,27 @@ class TestGetSim:
 
     def test_get_sim_default(self, db_setup):
         res = get_sim()
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
     def test_get_sim_none_id(self, db_setup):
         res = get_sim(id=None)
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
     def test_get_sim_negative_id(self, db_setup):
         res = get_sim(id=-1)
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
     def test_get_sim_zero_id(self, db_setup):
         res = get_sim(id=0)
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
     def test_get_sim_above_max_id(self, db_setup):
         res = get_sim(id=pow(2, 63))
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
     def test_get_sim_below_min_id(self, db_setup):
         res = get_sim(id=-pow(2, 63) - 1)
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
 class TestDeleteSim:
     """
@@ -70,27 +70,27 @@ class TestDeleteSim:
 
     def test_delete_sim_default(self, db_setup):
         res = delete_sim()
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
     def test_delete_sim_none_id(self, db_setup):
         res = delete_sim(id=None)
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
     def test_delete_sim_negative_id(self, db_setup):
         res = delete_sim(id=-1)
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
     def test_delete_sim_zero_id(self, db_setup):
         res = delete_sim(id=0)
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
     def test_delete_sim_above_max_id(self, db_setup):
         res = delete_sim(id=pow(2, 63))
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
     def test_delete_sim_below_min_id(self, db_setup):
         res = delete_sim(id=-pow(2, 63) - 1)
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
 class TestCreateSim:
     """
@@ -100,31 +100,31 @@ class TestCreateSim:
 
     def test_create_sim_default(self, db_setup):
         res = create_sim()
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
     def test_create_sim_none_imsi(self, db_setup):
         res = create_sim(imsi=None)
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
     def test_create_sim_long_imsi(self, db_setup):
         res = create_sim(imsi="A"*51)
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
     def test_create_sim_non_ascii_imsi(self, db_setup):
         res = create_sim(imsi="åäö😀")
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
     def test_create_sim_none_msisdn(self, db_setup):
         res = create_sim(msisdn=None)
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
     def test_create_sim_long_msisdn(self, db_setup):
         res = create_sim(msisdn="A"*51)
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
     def test_create_sim_non_ascii_msisdn(self, db_setup):
         res = create_sim(msisdn="åäö😀")
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
 class TestUpdateSim:
     """
@@ -134,28 +134,29 @@ class TestUpdateSim:
 
     def test_update_sim_default(self, db_setup):
         res = update_sim()
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
     def test_update_sim_none_imsi(self, db_setup):
         res = update_sim(imsi=None)
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
     def test_update_sim_long_imsi(self, db_setup):
         res = update_sim(imsi="A"*51)
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
     def test_update_sim_non_ascii_imsi(self, db_setup):
         res = update_sim(imsi="åäö😀")
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
     def test_update_sim_none_msisdn(self, db_setup):
         res = update_sim(msisdn=None)
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
     def test_update_sim_long_msisdn(self, db_setup):
         res = update_sim(msisdn="A"*51)
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
 
     def test_update_sim_non_ascii_msisdn(self, db_setup):
         res = update_sim(msisdn="åäö😀")
-        assert res.status_code != 500
+        assert res.status_code != 500, 'API failed to handle request'
+

@@ -25,4 +25,6 @@ def db_setup():
         subprocess.check_call(["rm", db_path + "pos.db"])
         warnings.warn("Detected zombie process locking the database")
 
+    # rest database to known state
     shutil.copy(db_path + "pos_bak.db", db_path + "pos.db")
+
